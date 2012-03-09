@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project basedir="." default="build" name="rtb-example">
+    <property environment="env"/>
+    <property name="debuglevel" value="source,lines,vars"/>
+    <property name="target" value="1.6"/>
+    <property name="source" value="1.6"/>
+    <path id="rtb-example.classpath">
+        <pathelement location="bin"/>
+        <pathelement location="lib/jetty-all-7.6.1.v20120215.jar"/>
+        <pathelement location="lib/servlet-api-2.5.jar"/>
+    </path>
+    <target name="init">
+        <mkdir dir="bin"/>
+        <copy includeemptydirs="false" todir="bin">
+            <fileset dir="src">
+                <exclude name="**/*.java"/>
+            </fileset>
+        </copy>
+    </target>
+    <target name="clean">
+        <delete dir="bin"/>
+        <delete dir="build"/>
+        <delete dir="dist"/>
+    </target>
+    <target depends="clean" name="cleanall"/>
+    <target depends="build-project" name="build"/>
+    <target depends="init" name="build-project">
+        <echo message="${ant.project.name}: ${ant.file}"/>
+        <javac debug="true" debuglevel="${debuglevel}" destdir="bin" source="${source}" target="${target}">
+            <src path="src"/>
+            <classpath refid="rtb-example.classpath"/>
+        </javac>
+    </target>
+    <target name="jar" depends="build-project">
+    	<mkdir dir="build"/>
+        <jar destfile="build/rtb-example.jar" filesetmanifest="mergewithoutmain">
+            <manifest>
+                <attribute name="Main-Class" value="com.adbrite.rtb.example.RTBServer"/>
+                <attribute name="Class-Path" value="."/>
+            </manifest>
+            <fileset dir="bin"/>
+            <zipfileset excludes="META-INF/*.SF" src="lib/jetty-all-7.6.1.v20120215.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="lib/servlet-api-2.5.jar"/>
+        </jar>
+    	<copy todir="build">
+    		<!-- Copy scripts in the same directory there rtb-example.jar is created. Makes testing easier. -->
+    		<fileset dir="scripts"/>
+    	</copy>
+    	<chmod perm="a+x">
+    		<fileset dir="build">
+    			<include name="**/*.sh"/>
+    		</fileset>
+    	</chmod>
+    </target>
+    <target name="dist" depends="jar">
+    	<mkdir dir="dist"/>
+    	<zip destfile="dist/rtb-example-source.zip">
+    		<fileset dir="." excludes="bin/**,build/**,dist/**,scripts/**,build.xml"/>
+    	</zip>	
+    	<zip destfile="dist/rtb-example.zip">
+    		<fileset file="build/rtb-example.jar"/>
+    		<fileset file="scripts/rtb-example.sh"/>
+    		<fileset file="scripts/request.json"/>
+    	</zip>	
+    </target>
+	
+</project>
