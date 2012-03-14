@@ -21,9 +21,9 @@ import org.json.JSONWriter;
 
 public class RTBServlet extends HttpServlet {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	private static final String RESPONSE_CODE = "response_code";
+    private static final String RESPONSE_CODE = "response_code";
 
     ServletConfig servletConfig = null;
 
@@ -56,27 +56,27 @@ public class RTBServlet extends HttpServlet {
         
         try {
 
-        	// Parse request
-        	JSONObject adBidRequest = parseAdBidRequest(req);
-        	context.log(adBidRequest.toString());
+            // Parse request
+            JSONObject adBidRequest = parseAdBidRequest(req);
+            context.log(adBidRequest.toString());
 
-        	// Write PASS response
+            // Write PASS response
             context.log("Response: PASS");
             generatePassResponse(jsonWriter);
         
         } catch (JSONException e) {
-        	context.log("JSONException: " + e);
-        	out.println("JSONException: " + e);
+            context.log("JSONException: " + e);
+            out.println("JSONException: " + e);
         }
         
     }
 
     private JSONObject parseAdBidRequest(HttpServletRequest req) throws JSONException, UnsupportedEncodingException, IOException {
-    	String encoding = req.getCharacterEncoding();
-    	InputStreamReader reader = encoding != null ? 
-    			new InputStreamReader(req.getInputStream(), encoding) :
-    			new InputStreamReader(req.getInputStream())	;
-    	return new JSONObject(new JSONTokener(reader)); 
+        String encoding = req.getCharacterEncoding();
+        InputStreamReader reader = encoding != null ? 
+                new InputStreamReader(req.getInputStream(), encoding) :
+                new InputStreamReader(req.getInputStream());
+        return new JSONObject(new JSONTokener(reader)); 
     }
     
     private void generatePassResponse(JSONWriter jsonWriter) 

@@ -21,12 +21,12 @@ public class RTBServer {
 
     public static void main(String[] args) throws Exception {
 
-    	/* 
-    	 * TODO: RTBServer [PORT|8888] [URL|/rtb] 
-    	 */
-    	int port = DEFAULT_PORT;
-    	String url = DEFAULT_URL;
-    	
+        /* 
+         * TODO: RTBServer [PORT|8888] [URL|/rtb] 
+         */
+        int port = DEFAULT_PORT;
+        String url = DEFAULT_URL;
+        
         // Create Server and handler
         Server server = new Server(port);
         
